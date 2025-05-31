@@ -3,7 +3,7 @@
 import React from 'react';
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
-import { IProduct } from '../types/product';
+import type { IProduct } from '../types/product';
 
 interface ProductCardProps {
   producto: IProduct;
@@ -11,12 +11,17 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ producto, onAdd }: ProductCardProps) {
+  const productId = producto.id?.toString() || '';
+
   return (
     <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50">
       <div className="flex justify-between items-start">
         <div className="flex-1">
-          {/* Hacemos que el nombre sea un enlace a /products/[productId] */}
-          <Link href={`/products/${producto.id}`} className="font-semibold text-gray-800 hover:underline">
+          {/* Usar productId validado */}
+          <Link 
+            href={`/products/${productId}`}
+            className="font-semibold text-gray-800 hover:underline"
+          >
             {producto.nombre}
           </Link>
           <p className="text-sm text-gray-600 mb-1">SKU: {producto.sku}</p>

@@ -1,15 +1,18 @@
-// src/app/products/[productId]/page.tsx
-
-'use client';
+'use client'
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import type { IProduct } from '../../../types/product';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 
 export default function ProductDetailPage() {
-  const { productId } = useParams<{ productId: string }>();
   const router = useRouter();
+  const params = useParams(); // Obtener params de forma correcta
+  const productId = Array.isArray(params.productId) 
+    ? params.productId[0] 
+    : params.productId;
+    
   const [producto, setProducto] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -26,11 +29,13 @@ export default function ProductDetailPage() {
       try {
         const res = await fetch(`/api/products/${productId}`);
         const data = await res.json();
+        
         if (!data.success) {
           setError(data.error || 'Error desconocido');
           setLoading(false);
           return;
         }
+        
         setProducto(data.data);
       } catch (e: any) {
         setError(e.message || 'Error al conectarse');

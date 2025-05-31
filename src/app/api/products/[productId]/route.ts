@@ -1,39 +1,55 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import dbConnect from '../../../../lib/mongodb';
-import Product from '../../../../models/Product';
+import dbConnect from '@/lib/mongodb';
+import Product from '@/models/Product';
+interface ResolvedProductParams {
+  productId: string;
+}
 
-/**
- * GET /api/products/:productId
- * Obtiene información de un producto específico por su ID.
- */
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { productId: string } }
+  request: Request,
+  { params: paramsPromise }: { params: Promise<ResolvedProductParams> }
 ) {
   try {
     await dbConnect();
 
-    const { productId } = params;
-    // Validar que productId sea un ObjectId válido
+    const actualParams: ResolvedProductParams = await paramsPromise;
+    const productId = actualParams.productId;
+    
     if (!/^[0-9a-fA-F]{24}$/.test(productId)) {
       return NextResponse.json(
-        { success: false, error: 'ID de producto inválido' },
+        { success: false, error: 'ID de producto no válido' },
         { status: 400 }
       );
     }
 
-    const producto = await Product.findById(productId);
-    if (!producto) {
+    const product = await Product.findById(productId).exec();
+    
+    if (!product) {
       return NextResponse.json(
         { success: false, error: 'Producto no encontrado' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ success: true, data: producto });
-  } catch (error: any) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
+    return NextResponse.json({ success: true, data: product });
+
+  } catch (error) {
+    console.error('Error al obtener el producto:', error);
+    
+    let errorMessage = 'Error interno del servidor';
+    let statusCode = 500;
+
+    if (error instanceof Error && error.name === 'CastError') {
+      const castError = error as any;
+      if (castError.kind === 'ObjectId') {
+        errorMessage = 'Formato de ID de producto inválido para la búsqueda.';
+        statusCode = 400;
+      }
+    }
+    
+    return NextResponse.json(
+      { success: false, error: errorMessage },
+      { status: statusCode }
+    );
   }
 }
