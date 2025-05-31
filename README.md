@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sistema de Cotización de Productos
 
-## Getting Started
+Este proyecto es una aplicación web para gestionar cotizaciones de productos. Combina **Next.js** con **TypeScript** y **MongoDB** como base de datos.
 
-First, run the development server:
+## 🚀 Empezando
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerrequisitos
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js v18 o superior
+- MongoDB (local o Atlas)
+- npm o yarn
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Instalación
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Clonar el repositorio:**
+  ```bash
+  git clone https://github.com/d4na3l/.git
+  cd 
+  ```
 
-## Learn More
+2. **Instalar dependencias:**
+  ```bash
+  npm install
+  # o
+  yarn install
+  ```
 
-To learn more about Next.js, take a look at the following resources:
+3. **Configurar variables de entorno:**
+  Crear un archivo `.env.local` en la raíz del proyecto:
+  ```env
+  MONGODB_URI=mongodb+srv://usuario:contraseña@cluster0.tucluster.mongodb.net/nombre-db?retryWrites=true&w=majority
+  PORT=3000
+  ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Poblar la base de datos:**
+  ```bash
+  npm run db:seed
+  ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. **Iniciar la aplicación:**
+  ```bash
+  npm run dev
+  # o
+  yarn dev
+  ```
 
-## Deploy on Vercel
+La aplicación estará disponible en: [http://localhost:3000](http://localhost:3000)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ⚙️ Funcionalidades Principales
+
+### 1. Gestión de Productos
+
+- Catálogo de productos organizado por categorías
+- Búsqueda y filtrado de productos
+- Detalles técnicos de cada producto
+
+### 2. Sistema de Cotización
+
+- **Crear cotizaciones:**
+  - Agregar/eliminar productos
+  - Ajustar cantidades
+  - Ver subtotal en tiempo real
+
+- **Cálculo automático:**
+  - Comisiones basadas en reglas de negocio
+  - Impuestos y descuentos
+  - Total final
+
+- **Generar cotizaciones:**
+  - Generar reporte en formato PDF
