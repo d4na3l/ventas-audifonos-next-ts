@@ -14,8 +14,8 @@ Este proyecto es una aplicación web para gestionar cotizaciones de productos. C
 
 1. **Clonar el repositorio:**
   ```bash
-  git clone https://github.com/d4na3l/.git
-  cd 
+  git clone https://github.com/d4na3l/ventas-audifonos-next-ts
+  cd ventas-audifonos-next-ts
   ```
 
 2. **Instalar dependencias:**
